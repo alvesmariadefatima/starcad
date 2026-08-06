@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(try { Invoke-RestMethod -Uri \"http://localhost:4000/contato\" -Method Post -ContentType \"application/json\" -Body '{\"nome\":\"A\",\"email\":\"nao-e-email\",\"telefone\":\"123\",\"mensagem\":\"curta\"}' } catch { $_.ErrorDetails.Message }; Get-Content \"c:\\\\Users\\\\maria\\\\OneDrive\\\\Área de Trabalho\\\\StarCard\\\\starcad-api\\\\dados\\\\contatos.jsonl\")"
+    ]
+  }
+}
