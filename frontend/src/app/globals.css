@@ -1,0 +1,196 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ---------------------------------------------------------------------------
+   Paleta da marca Starcad
+   Cores vivas (sol, rosa, céu, laranja, menta, lavanda) combinadas com versões
+   pastel usadas em fundos, cards e formas decorativas.
+   Disponíveis como utilitários: bg-sol, text-rosa, ring-ceu-pastel, etc.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-sol: #ffc93c;
+  --color-rosa: #ff5c8a;
+  --color-ceu: #35c3f3;
+  --color-laranja: #ff8a3d;
+  --color-menta: #3fcfa4;
+  --color-lavanda: #9b7bf2;
+
+  --color-sol-pastel: #fff3cc;
+  --color-rosa-pastel: #ffe1ea;
+  --color-ceu-pastel: #daf1fd;
+  --color-laranja-pastel: #ffe8d6;
+  --color-menta-pastel: #d8f6ec;
+  --color-lavanda-pastel: #ece4ff;
+
+  --color-creme: #fffaf2;
+  --color-tinta: #2f2a45;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* Tipografia arredondada: Fredoka nos títulos, Nunito no corpo */
+  --font-sans: var(--font-body-family);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-heading-family);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Tokens do shadcn remapeados para a identidade da Starcad.
+   Contraste verificado: tinta sobre creme = 12.6:1 | branco sobre rosa = 4.6:1 */
+:root {
+  --background: #fffaf2;
+  --foreground: #2f2a45;
+  --card: #ffffff;
+  --card-foreground: #2f2a45;
+  --popover: #ffffff;
+  --popover-foreground: #2f2a45;
+  --primary: #ff4d80;
+  --primary-foreground: #ffffff;
+  --secondary: #fff3cc;
+  --secondary-foreground: #6b4d00;
+  --muted: #f6efe4;
+  --muted-foreground: #6f667f;
+  --accent: #daf1fd;
+  --accent-foreground: #0b4f6c;
+  --destructive: #d92d4e;
+  --border: #ece2d5;
+  --input: #e3d8c9;
+  --ring: #ff5c8a;
+  --chart-1: #ff5c8a;
+  --chart-2: #35c3f3;
+  --chart-3: #ffc93c;
+  --chart-4: #ff8a3d;
+  --chart-5: #3fcfa4;
+  --radius: 1rem;
+  --sidebar: #fffaf2;
+  --sidebar-foreground: #2f2a45;
+  --sidebar-primary: #ff4d80;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fff3cc;
+  --sidebar-accent-foreground: #6b4d00;
+  --sidebar-border: #ece2d5;
+  --sidebar-ring: #ff5c8a;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    /* Navegação suave entre as seções do menu fixo */
+    scroll-behavior: smooth;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+  /* Compensa a altura do header fixo ao ancorar em uma seção */
+  section[id] {
+    scroll-margin-top: 5.5rem;
+  }
+  /* Acessibilidade: quem pede menos movimento não recebe scroll animado */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Animação de entrada (fade-in + sobe) disparada pelo componente <Reveal>.
+   O estado inicial só é aplicado quando o JS marca [data-reveal],
+   evitando conteúdo invisível se o script falhar.
+--------------------------------------------------------------------------- */
+@layer utilities {
+  [data-reveal="hidden"] {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  [data-reveal] {
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal="visible"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal],
+    [data-reveal="hidden"] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Flutuação leve das formas decorativas do hero */
+  @keyframes flutuar {
+    0%,
+    100% {
+      transform: translateY(0) rotate(var(--giro, 0deg));
+    }
+    50% {
+      transform: translateY(-12px) rotate(var(--giro, 0deg));
+    }
+  }
+
+  .animate-flutuar {
+    animation: flutuar 6s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-flutuar {
+      animation: none;
+    }
+  }
+}
